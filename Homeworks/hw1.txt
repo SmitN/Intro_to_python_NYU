@@ -1,0 +1,118 @@
+Introduction to Python
+
+davidbpython.com
+
+
+
+
+Homework, Session 1
+
+
+
+1.1	Exponientation with tidy border: start with the following code, which takes input from the user twice:
+var_1 = input('Please enter an integer:  ')
+var_2 = input('Please enter another integer:  ')
+Raise the first number to the power of the second number (you will have to convert them to numbers to do the math).  Take the resulting number and determine its string length with len() (you will have to convert it to a string to get its string length).  Print a line with a ======== border exactly the length of the resulting number (use the * operator to repeat the string '=').  On the next line, print the number.  Then on a third line print a ======== border the same length as the first.
+
+Sample program run(s):
+ $ python myprog.py
+ please enter an integer:  3
+ please enter another integer:  14
+ =======
+ 4782969
+ =======
+
+ $ python myprog.py
+ please enter an integer:  3
+ please enter another integer:  5
+ ===
+ 243
+ ===
+HOMEWORK CHECKLIST please use this checklist to avoid common mistakes and ensure a correct solution:
+* Solution is to homework, not exercises (exercises are numbered Ex.1.1, Ex.1.2, etc.)
+* There is only one solution in each submission (this one is for Homework 1.1)
+* There are no extraneous comments or "testing" code lines
+* There are no unnecessary type conversions (for example str('hello'))
+* Program runs as shown in the assignment, or if it doesn't, a comment is placed at the top explaining what error or bad output has occurred (it is fine to turn in an incomplete solution if you have a question or would like to discuss ways to improve)
+
+ 
+1.2	Tip calculator: write a restaurant bill calculator that takes three inputs: a restaurant bill total charge, the number of people who will be splitting the bill, and the desired tip in percent of the total bill.
+Expected Output:
+Please enter the total bill amount:  120
+Please enter the number in your party:  5
+Please enter the desired tip percentage (for example, "20" for 20%):  15
+A 15.0% tip ($18.0) was added to the bill, for a total of $138.0
+With 5 in your party, each person must pay $27.6
+HOMEWORK CHECKLIST
+* There are no extraneous comments or "testing" code lines
+* There are no unnecessary type conversions (for example str('hello'))
+* Program runs as shown in the assignment, or if it doesn't, a comment is placed at the top explaining what error or bad output has occurred (it is fine to turn in an incomplete solution if you have a question or would like to discuss ways to improve)
+
+
+
+
+SUPPLEMENTARY (EXTRA CREDIT) EXERCISES
+
+These assignments are intended to give you additional practice if you have the time and inclination.  I will look at any submissions from this unit, although I may not have as much time to offer detailed inline comments as I do with the required assignments.
+
+ 
+1.3	(extra credit) Price Per Unit Comparison: write a program that takes four inputs: the price of a product, the unit size of that product (for example, "5" for five ounces, or "2.5" for 2.5 litres), the price of a second product, and the unit size of that product (using the same units). The program will then calculate the price per unit of each product and show which product is the better value on that basis.
+Sample program run(s):
+please enter the unit size of Product 1:  100
+please enter the price of Product 1:  10
+please enter the unit size of Product 2:  50
+please enter the price of Product 2:  7.50
+Product 1 costs $0.1 per unit
+Product 2 costs $0.15 per unit
+Product 1 is 66.67% the per-unit cost of Product 2
+ 
+1.4	(extra credit) Share Calculator: this program is just a practical demonstration of how easily Python can pull in data from the web for use in your programs. It will only work if your computer is connected to the internet (and there are no firewall or other systems in place that might prevent a network connection from your computer).
+Calculate the number of shares of a given stock a given amount of money can buy.  Take user input for a stock symbol (for example, "AAPL" (Apple Inc.), "GOOG" (Google Inc.), "DOW" (Dow Chemical Co.) and a cash dollar amount, and calculate how many shares could be bought for the cash.
+
+The program uses  a pre-written function (get_price(), supplied below) to retrieve the stock's current price from the internet to use in the calculation.
+
+Starter Code:
+def get_price(symbol):
+    import urllib.request, urllib.parse, urllib.error, urllib.request, pprint, ssl
+
+    apikey = 'demo'
+
+    url = ('https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY'
+           '&symbol={symbol}&interval=1min&apikey={apikey}'
+           '&datatype=csv'.format(symbol=symbol, apikey=apikey))
+
+    # if you get a 'certificate' error, uncomment the next 3
+    # commented lines and try again
+    ctx = None
+    # ctx = ssl.create_default_context()
+    # ctx.check_hostname = False
+    # ctx.verify_mode = ssl.CERT_NONE
+
+    text = urllib.request.urlopen(url, context=ctx).read().decode('utf-8')
+
+    try:
+        quote = text.splitlines()[1].split(',')[4]
+    except IndexError:
+        if 'demo purposes' in text:
+            exit('\n*** NOTE ***  This demo URL can only be used with MSFT.  '
+                 'To obtain live data on other symbols, you must edit your '
+                 'program to change "apikey = " variable in this function to '
+                 'a user key you can obtain from the "alphavantage" service '
+                 'by signing up for a free account.  See error message below: '
+                 ' \n\n' + text)
+
+        exit('error parsing response.  Response:  ' + text)
+
+    return quote
+
+aa = input('please input the stock symbol you would like to buy:  ')
+bb = input('please input the cash you have to invest:  ')
+
+cc = get_price(aa)      # returns a string price
+
+## your code goes here - calculate the # of shares
+## that can be bought with the user's cash
+Sample program run(s):
+please input the stock symbol you would like to buy:  MSFT
+please input the cash you have to invest:  10000
+with $10000 you can buy 121 shares of MSFT at $82.40/share
